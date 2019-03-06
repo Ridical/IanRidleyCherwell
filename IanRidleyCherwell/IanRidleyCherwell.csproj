@@ -1,0 +1,98 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\components\1A.tsx" />
+    <None Remove="ClientApp\components\1AFull.tsx" />
+    <None Remove="ClientApp\components\1B.tsx" />
+    <None Remove="ClientApp\components\Loading.tsx" />
+    <None Remove="ClientApp\components\objects\TextInput.tsx" />
+    <None Remove="ClientApp\components\OneAComponent.tsx" />
+    <None Remove="ClientApp\components\ts\api\api.tsx" />
+    <None Remove="ClientApp\components\ts\CalculationService.tsx" />
+    <None Remove="ClientApp\components\ts\global.tsx" />
+    <None Remove="ClientApp\components\ts\model\CalculationModels.tsx" />
+    <None Remove="ClientApp\components\utility\CustomTextInput.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\images\site\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\layout.css" />
+    <None Include="wwwroot\css\layout.min.css" />
+    <None Include="wwwroot\css\layout.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IR.TechTest.Models\IR.TechTest.Models.csproj" />
+    <ProjectReference Include="..\IR.TechTest.Service.Abstract\IR.TechTest.Service.Interface.csproj" />
+    <ProjectReference Include="..\IR.TechTest.Service\IR.TechTest.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\1A.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\1AFull.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\1B.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\Loading.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\objects\TextInput.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\OneAComponent.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\ts\api\api.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\ts\model\CalculationModels.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\ts\services\CalculationService.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\ts\global.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\utility\CustomTextInput.ts" />
+  </ItemGroup>
+
+  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+
+    <!-- In development, the dist files won't exist on the first run or when cloning to
+         a different machine, so rebuild them if not already present. -->
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

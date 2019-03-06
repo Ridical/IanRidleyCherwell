@@ -1,0 +1,11 @@
+
+.vs/*
+IR.TechTest.Models/bin/*
+IR.TechTest.Models/bin/*
+IR.TechTest.Models/obj/*
+IR.TechTest.Service.Abstract/bin/*
+IR.TechTest.Service.Abstract/obj/*
+IR.TechTest.Service.UnitTest/bin/*
+IR.TechTest.Service.UnitTest/obj/*
+IR.TechTest.Service/bin/*
+IR.TechTest.Service/obj/*

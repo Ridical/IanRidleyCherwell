@@ -1,0 +1,111 @@
+﻿$font-stack: Helvetica, sans-serif;
+$primary-color: #820002;
+$secondary-color: #0a0a0a;
+$background-color: #fff;
+
+$primary-color-highlight: #9d4040;
+
+$mobile: "(max-width: 550px)";
+
+@mixin center-children {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin fullpage-background {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.8);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    overflow-x: hidden;
+
+    @media #{$mobile} {
+        padding: 0px 10px 10px 10px;
+    }
+}
+
+.container-fluid {
+    @media #{$mobile} {
+        padding: 0;
+        overflow-x: hidden;
+    }
+}
+
+#app-body {
+    @media #{$mobile} {
+        margin-top: 70px;
+    }
+}
+
+.row {
+    @media #{$mobile} {
+        padding: 0px 15px;
+    }
+}
+
+.loadingPanel {
+
+    @include center-children;
+    @include fullpage-background;
+    display: none;
+
+    .loadingContent {
+        @include center-children;
+        border-radius: 20px;
+        background-color: $background-color;
+        width: 50%;
+        min-height: 200px;
+        margin-top: -220px;
+
+        .col-md-12 {
+            text-align: center;
+        }
+
+        img {
+            max-height: 32px;
+        }
+    }
+}
+
+.question-body {
+    p {
+        margin-bottom: 20px;
+    }
+
+    label {
+        padding-top: 5px;
+    }
+
+    .output {
+        label {
+            padding: 20px;
+        }
+    }
+
+    .buttonRow {
+        button {
+            float: right;
+        }
+    }
+}
+
+
+.validation-error{
+    border-color: red;
+}
+
+.error-panel{
+    color: red;
+}
